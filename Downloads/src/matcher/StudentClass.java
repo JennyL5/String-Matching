@@ -11,23 +11,24 @@ public class StudentClass {
 	public void buildPrefixFunction() {
 		kmpMatcher.setPrefixFunction(computePrefixFunction(kmpMatcher.getPattern()));
 	}
-	
+
 	public static int[] computePrefixFunction(String pattern) {
 		int m = pattern.length();
-		int [] pi = new int [m]; //pi is the failure function
-		pi [0] = 0;
+		int[] pi = new int[m]; //prefix function
+		pi[0] = 0;
 		int k = 0;
 
-		for (int q=1; q<m; q++) {
+		for (int q = 1; q < m; q++) {
+			//runs if next character does not match
 			while (k > 0 && pattern.charAt(k) != pattern.charAt(q)) {
-				k = pi[k-1];
+				k = pi[k - 1];
 			}
-			if (pattern.charAt(k) == pattern.charAt(q)){
-				k = k+1;
+			//checks if next character matches
+			if (pattern.charAt(k) == pattern.charAt(q)) {
+				k = k + 1;
 			}
 			pi[q] = k;
 		}
-
 		return pi;
 	}
 
@@ -67,51 +68,52 @@ public class StudentClass {
 		}
 
 		public void search() {
-			//int [] pi = computePrefixFunction(pattern);
-			int [] pi = prefixFunction;
+			int[] pi = prefixFunction;
 			int q = 0;
-			
+
 			if (patternLen <= textLen) {
-				for (int i=0; i<textLen; i++){
-					while (q>0 && (pattern.charAt(q) != text.charAt(i))){
-						q=pi[q-1];
+				for (int i = 0; i < textLen; i++){
+					//runs if next character does not match
+					while (q > 0 && (pattern.charAt(q) != text.charAt(i))){
+						q = pi[q - 1];
 					}
+					//checks if next character matches
 					if (pattern.charAt(q) == text.charAt(i)){
-						q=q+1;
+						q = q + 1;
 					}
-					if (q==patternLen) {
-						matchIndices.enqueue(i- patternLen +1);
-						q=pi[q-1];
+					//check if pattern is matched
+					if (q == patternLen) {
+						matchIndices.enqueue(i - patternLen + 1); //adds to queue
+						q = pi[q - 1];
+						}
 					}
 				}
-
 			}
 		}
-	}	
+
+	/*
 	public static void main(String args[]){
-		//String txt = "ABABDABACDABABCABAB";
 		//String pat = "ABABCABAB";
 
 		//computePrefixFunction(pat);
 		//Matcher.testPrefixFunction(pat);
 		//Matcher.testKMPMatcher(146, 62);
-		//Generates t random patterns of length l and finds their occurrences in a fixed text
 
-		int  p = 10;
-		int t = 100;
-		String f = "matcherTimes.txt";
+		//int  p = 10;
+		//int t = 100;
+		//String f = "matcherTimes.txt";
 
 		//Matcher.getRuntimes(p, t, f);
 
-		String fRatios = "matcherRatios.txt";
-		int xOver = 50000;
+		//String fRatios = "matcherRatios.txt";
+		//int xOver = 50000;
 
 		//Matcher.getRatios(p, t, xOver, fRatios);
 
-		//to plot
-		double c = 0.011660;         //maximum constant
-		double a = 0.008488;        //average
-		Matcher.plotRuntimes(c, a, f);
+		//double c = 0.011660;         //maximum constant
+		//double a = 0.008488;        //average
+		//Matcher.plotRuntimes(c, a, f);
 
 	}
+	*/
 }
