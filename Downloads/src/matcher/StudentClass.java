@@ -14,19 +14,20 @@ public class StudentClass {
 
 	public static int[] computePrefixFunction(String pattern) {
 		int m = pattern.length();
-		int[] pi = new int[m]; //prefix function
-		pi[0] = 0;
-		int k = 0;
+		int[] pi = new int[m];
+		pi[0] = 0; //initialise prefix function
+		int k = 0; //initialise characters matched
 
 		for (int q = 1; q < m; q++) {
-			//runs if next character does not match
+			//if next character does not match, then the number of characters matched is set to the prefix function at previous index of the prefix function at k
 			while (k > 0 && pattern.charAt(k) != pattern.charAt(q)) {
 				k = pi[k - 1];
 			}
-			//checks if next character matches
+			//if next character matches, then characters matched is increased by 1
 			if (pattern.charAt(k) == pattern.charAt(q)) {
 				k = k + 1;
 			}
+			//the number of characters matched is set to the prefix function at index q
 			pi[q] = k;
 		}
 		return pi;
@@ -72,18 +73,19 @@ public class StudentClass {
 			int q = 0;
 
 			if (patternLen <= textLen) {
+				//repeats for each character in the text
 				for (int i = 0; i < textLen; i++){
-					//runs if next character does not match
+					//if next character does not match, then the number of characters matched is set to the prefix function at previous index of the prefix function at k
 					while (q > 0 && (pattern.charAt(q) != text.charAt(i))){
 						q = pi[q - 1];
 					}
-					//checks if next character matches
+					//if next character matches, adds 1 to the number of characters matched
 					if (pattern.charAt(q) == text.charAt(i)){
 						q = q + 1;
 					}
-					//check if pattern is matched
+					//if pattern is matched, then adds character to the queue
 					if (q == patternLen) {
-						matchIndices.enqueue(i - patternLen + 1); //adds to queue
+						matchIndices.enqueue(i - patternLen + 1);
 						q = pi[q - 1];
 						}
 					}
